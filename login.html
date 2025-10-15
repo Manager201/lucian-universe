@@ -71,7 +71,7 @@
     let apiBase = "";
 
     async function fetchTunnelUrl() {
-      const res = await fetch("https://raw.githubusercontent.com/YourGitHubUsername/YourRepoName/main/tunnel_url.txt");
+      const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/main/tunnel_url.txt");
       apiBase = (await res.text()).trim();
       console.log("Using API:", apiBase);
     }
