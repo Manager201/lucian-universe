@@ -40,25 +40,28 @@
       background-color: #e60000;
     }
 
-    /* Main content */
-    .content {
+    /* Dashboard content area */
+    .dashboard {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      height: calc(100vh - 60px);
+      flex-wrap: wrap;
+      align-items: flex-start;
+      padding: 20px;
+      gap: 20px;
     }
 
     .box {
+      flex: 1 1 calc(25% - 20px); /* 4 columns */
+      min-width: 200px;
       border: 2px solid #ccc;
       border-radius: 6px;
-      padding: 30px;
+      padding: 20px;
       background-color: white;
       text-align: center;
-      width: 300px;
     }
 
     .box h2 {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
+      font-size: 18px;
     }
 
     .box button {
@@ -84,11 +87,27 @@
     <button onclick="window.location.href='https://lucian-universe.pages.dev/'">Logout</button>
   </div>
 
-  <!-- Main content -->
-  <div class="content">
+  <!-- Dashboard boxes -->
+  <div class="dashboard">
     <div class="box">
       <h2>Casaos</h2>
-      <button onclick="window.location.href='https://example.com'">Go to Casaos</button>
+      <button onclick="window.location.href='https://example.com'">Go</button>
+    </div>
+    <div class="box">
+      <h2>Jellyfin</h2>
+      <button onclick="window.location.href='https://example.com'">Go</button>
+    </div>
+    <div class="box">
+      <h2>Immich</h2>
+      <button onclick="window.location.href='https://example.com'">Go</button>
+    </div>
+    <div class="box">
+      <h2>Navidrome</h2>
+      <button onclick="window.location.href='https://example.com'">Go</button>
+    </div>
+    <div class="box">
+      <h2>File Manager</h2>
+      <button onclick="window.location.href='https://example.com'">Go</button>
     </div>
   </div>
 
