@@ -1,1 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
 
+    /* Top navigation bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #222;
+      color: white;
+      padding: 15px 20px;
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .navbar button {
+      background-color: #ff4d4d;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .navbar button:hover {
+      background-color: #e60000;
+    }
+
+    /* Main content */
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 60px);
+    }
+
+    .box {
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      padding: 30px;
+      background-color: white;
+      text-align: center;
+      width: 300px;
+    }
+
+    .box h2 {
+      margin-bottom: 20px;
+    }
+
+    .box button {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .box button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="navbar">
+    <h1>Dashboard</h1>
+    <button onclick="window.location.href='https://lucian-universe.pages.dev/'">Logout</button>
+  </div>
+
+  <!-- Main content -->
+  <div class="content">
+    <div class="box">
+      <h2>Casaos</h2>
+      <button onclick="window.location.href='https://example.com'">Go to Casaos</button>
+    </div>
+  </div>
+
+</body>
+</html>
