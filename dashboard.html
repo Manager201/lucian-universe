@@ -9,6 +9,9 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     /* Top navigation bar */
@@ -40,23 +43,28 @@
       background-color: #e60000;
     }
 
-    /* Dashboard content area */
+    /* Dashboard grid */
     .dashboard {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* 4 fixed columns */
       gap: 20px;
+      padding: 20px;
+      flex: 1; /* take remaining height */
+      box-sizing: border-box;
     }
 
     .box {
-      flex: 1 1 calc(25% - 20px); /* 4 columns */
-      min-width: 200px;
       border: 2px solid #ccc;
       border-radius: 6px;
       padding: 20px;
       background-color: white;
       text-align: center;
+      width: 220px;   /* fixed width */
+      height: 150px;  /* fixed height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     .box h2 {
@@ -76,6 +84,14 @@
 
     .box button:hover {
       background-color: #0056b3;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: right;
+      padding: 10px 20px;
+      font-size: 14px;
+      color: #555;
     }
   </style>
 </head>
@@ -109,6 +125,11 @@
       <h2>File Manager</h2>
       <button onclick="window.location.href='https://example.com'">Go</button>
     </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Made with ❤️ in India
   </div>
 
 </body>
