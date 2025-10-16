@@ -140,7 +140,7 @@
   }
 
   (async () => {
-    const services = ["Jellyfin", "Immich", "Navidrome", "File Manager", "Casaos", "NetData"];
+    const services = ["Jellyfin", "Immich", "Navidrome", "File Manager", "Casaos", "Netdata"];
     for (const name of services) {
       try {
         const url = await getServiceTunnelUrl(name);
