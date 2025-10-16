@@ -83,12 +83,15 @@
 
     let apiBase = "";
 
-    async function fetchTunnelUrl() {
-      const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/main/tunnel_url.txt");
-      apiBase = (await res.text()).trim();
-      console.log("Using API:", apiBase);
-    }
-    fetchTunnelUrl();
+    (async () => {
+      try {
+        apiBase = await getLoginTunnelUrl();
+        console.log("✅ API base URL:", apiBase);
+      } catch (err) {
+        console.error("⚠️ Failed to fetch tunnel URL:", err);
+        document.getElementById("message").textContent = "Server unavailable, please try again later.";
+      }
+    })();
 
 
     // Check username and decide login method
