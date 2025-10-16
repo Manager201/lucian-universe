@@ -145,8 +145,6 @@
       try {
         const url = await getServiceTunnelUrl(name);
         const btn = document.getElementById(`btn-${name.toLowerCase().replace(/\s+/g, '-')}`);
-        if (name.toLowerCase() === "netdata") 
-          window.open(url + "/spaces/lucianknight0-space/rooms/luciangateway-local/overview", "_blank");
         if (btn) btn.onclick = () => window.open(url, "_blank"); {
         }
       } catch (err) {
