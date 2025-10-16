@@ -95,35 +95,62 @@
   </div>
 
   <!-- Dashboard boxes -->
-  <div class="dashboard">
-    <div class="box">
-      <h2>Jellyfin</h2>
-      <button onclick="window.location.href='https://example.com'">Go</button>
-    </div>
-    <div class="box">
-      <h2>Immich</h2>
-      <button onclick="window.location.href='https://example.com'">Go</button>
-    </div>
-    <div class="box">
-      <h2>Navidrome</h2>
-      <button onclick="window.location.href='https://example.com'">Go</button>
-    </div>
-    <div class="box">
-      <h2>File Manager</h2>
-      <button onclick="window.location.href='https://example.com'">Go</button>
-    </div>
-    <div class="box">
-      <h2>Casaos</h2>
-      <button onclick="window.location.href='https://example.com'">Go</button>
-    </div>
-    <div class="box">
-      <h2>NetData</h2>
-      <button onclick="window.location.href='https://example.com'">Go</button>
-    </div>
+<div class="dashboard">
+  <div class="box">
+    <h2>Jellyfin</h2>
+    <button id="btn-jellyfin">Go</button>
   </div>
+  <div class="box">
+    <h2>Immich</h2>
+    <button id="btn-immich">Go</button>
+  </div>
+  <div class="box">
+    <h2>Navidrome</h2>
+    <button id="btn-navidrome">Go</button>
+  </div>
+  <div class="box">
+    <h2>File Manager</h2>
+    <button id="btn-file-manager">Go</button>
+  </div>
+  <div class="box">
+    <h2>Casaos</h2>
+    <button id="btn-casaos">Go</button>
+  </div>
+  <div class="box">
+    <h2>NetData</h2>
+    <button id="btn-netdata">Go</button>
+  </div>
+</div>
   <!-- Footer -->
   <div class="footer">
     Made with ❤️ in India
   </div>
+  <script>
+  async function getServiceTunnelUrl(serviceLabel) {
+    const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
+    if (!res.ok) throw new Error(`Failed to fetch tunnel file: ${res.status}`);
+    const text = await res.text();
+    const lines = text.split("\n");
+    for (const raw of lines) {
+      const line = raw.trim();
+      const regex = new RegExp(`^${serviceLabel}\\s*-`, "i");
+      if (regex.test(line)) return line.replace(regex, "").trim();
+    }
+    throw new Error(`${serviceLabel} tunnel not found`);
+  }
+
+  (async () => {
+    const services = ["Jellyfin", "Immich", "Navidrome", "File Manager", "Casaos", "NetData"];
+    for (const name of services) {
+      try {
+        const url = await getServiceTunnelUrl(name);
+        const btn = document.getElementById(`btn-${name.toLowerCase().replace(/\s+/g, '-')}`);
+        if (btn) btn.onclick = () => window.open(url, "_blank");
+      } catch (err) {
+        console.error(`Failed to set link for ${name}:`, err);
+      }
+    }
+  })();
+</script>
 </body>
 </html>
