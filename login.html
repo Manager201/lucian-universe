@@ -69,7 +69,7 @@
 
   <script>
     async function getLoginTunnelUrl() {
-        const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian_universe/main/tunnel_url.txt");
+        const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
         if (!res.ok) {
             throw new Error(`Failed to fetch tunnel file: ${res.status}`);
         }
