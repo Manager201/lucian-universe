@@ -70,20 +70,23 @@
   <script>
     async function getLoginTunnelUrl() {
         const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian_universe/main/tunnel_url.txt");
-        const text = await res.text();
+        if (!res.ok) {
+            throw new Error(`Failed to fetch tunnel file: ${res.status}`);
+        }
 
+        const text = await res.text();
         const lines = text.split("\n");
+
         for (const raw of lines) {
             const line = raw.trim();
-
-            // Case-insensitive match, capture everything after "Login tunnel -"
-            const match = line.match(/^login tunnel\s*-\s*(.+)$/i);
-            if (match) {
-                return match[1].trim(); // this is the full URL
+            // Match "Login tunnel - <url>" (case-insensitive)
+            if (/^login tunnel\s*-/i.test(line)) {
+                // Remove the prefix and return the rest
+                return line.replace(/^login tunnel\s*-\s*/i, "").trim();
             }
         }
 
-        throw new Error("Login tunnel not found");
+        throw new Error("Login tunnel not found in file");
     }
 
     let apiBase = "";
@@ -95,9 +98,12 @@
         } catch (err) {
             console.error("⚠️ Failed to fetch tunnel URL:", err);
             const msgEl = document.getElementById("message");
-            if (msgEl) msgEl.textContent = "Server unavailable, please try again later.";
+            if (msgEl) {
+                msgEl.textContent = "Server unavailable, please try again later.";
+            }
         }
     })();
+
 
     // Check username and decide login method
     async function chooseMethod() {
