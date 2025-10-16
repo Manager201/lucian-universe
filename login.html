@@ -68,6 +68,19 @@
   <p id="message"></p>
 
   <script>
+    async function getLoginTunnelUrl() {
+      const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian_universe/main/tunnel_url.txt");
+      const text = await res.text();
+      const lines = text.split("\n");
+      for (const line of lines) {
+        if (line.toLowerCase().startsWith("login tunnel")) {
+          const url = line.split(" - ")[1].trim();
+          return url;
+        }
+      }
+      throw new Error("Login tunnel not found");
+    }
+
     let apiBase = "";
 
     async function fetchTunnelUrl() {
