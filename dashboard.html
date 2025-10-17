@@ -11,7 +11,6 @@
       background-color: #f9f9f9;
     }
 
-    /* Top navigation bar */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -40,7 +39,6 @@
       background-color: #e60000;
     }
 
-    /* Dashboard content area */
     .dashboard {
       display: flex;
       flex-wrap: wrap;
@@ -50,7 +48,7 @@
     }
 
     .box {
-      flex: 1 1 calc(25% - 20px); /* 4 columns */
+      flex: 1 1 calc(25% - 20px);
       min-width: 200px;
       border: 2px solid #ccc;
       border-radius: 6px;
@@ -77,7 +75,7 @@
     .box button:hover {
       background-color: #0056b3;
     }
-        /* Footer */
+
     .footer {
       text-align: right;
       padding: 10px 20px;
@@ -88,70 +86,118 @@
 </head>
 <body>
 
+  <!-- 🚀 Session check FIRST -->
+  <script>
+    async function getLoginTunnelUrl() {
+      const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
+      const text = await res.text();
+      for (const line of text.split("\n")) {
+        if (/^login tunnel\s*-/i.test(line)) {
+          return line.replace(/^login tunnel\s*-\s*/i, "").trim();
+        }
+      }
+      throw new Error("Login tunnel not found");
+    }
+
+    (async () => {
+      try {
+        const api = await getLoginTunnelUrl();  // 🔹 get your live Flask backend URL
+        const res = await fetch(api + "/session_check", { credentials: "include" });
+
+        if (!res.ok) {
+          console.warn("Not logged in, redirecting...");
+          window.location.href = "/login";
+          return;
+        }
+
+        const data = await res.json();
+        console.log("Authenticated user:", data.username);
+      } catch (e) {
+        console.error("Session check failed:", e);
+        window.location.href = "/login";
+      }
+    })();
+  </script>
+
   <!-- Top bar -->
   <div class="navbar">
     <h1>Dashboard</h1>
-    <button onclick="window.location.href='https://lucian-universe.pages.dev/'">Logout</button>
+    <button onclick="logoutUser()">Logout</button>
   </div>
 
   <!-- Dashboard boxes -->
-<div class="dashboard">
-  <div class="box">
-    <h2>Jellyfin</h2>
-    <button id="btn-jellyfin">Go</button>
+  <div class="dashboard">
+    <div class="box">
+      <h2>Jellyfin</h2>
+      <button id="btn-jellyfin">Go</button>
+    </div>
+    <div class="box">
+      <h2>Immich</h2>
+      <button id="btn-immich">Go</button>
+    </div>
+    <div class="box">
+      <h2>Navidrome</h2>
+      <button id="btn-navidrome">Go</button>
+    </div>
+    <div class="box">
+      <h2>File Manager</h2>
+      <button id="btn-file-manager">Go</button>
+    </div>
+    <div class="box">
+      <h2>Casaos</h2>
+      <button id="btn-casaos">Go</button>
+    </div>
+    <div class="box">
+      <h2>NetData</h2>
+      <button id="btn-netdata">Go</button>
+    </div>
   </div>
-  <div class="box">
-    <h2>Immich</h2>
-    <button id="btn-immich">Go</button>
-  </div>
-  <div class="box">
-    <h2>Navidrome</h2>
-    <button id="btn-navidrome">Go</button>
-  </div>
-  <div class="box">
-    <h2>File Manager</h2>
-    <button id="btn-file-manager">Go</button>
-  </div>
-  <div class="box">
-    <h2>Casaos</h2>
-    <button id="btn-casaos">Go</button>
-  </div>
-  <div class="box">
-    <h2>NetData</h2>
-    <button id="btn-netdata">Go</button>
-  </div>
-</div>
-  <!-- Footer -->
+
   <div class="footer">
     Made with ❤️ in India
   </div>
-  <script>
-  async function getServiceTunnelUrl(serviceLabel) {
-    const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
-    if (!res.ok) throw new Error(`Failed to fetch tunnel file: ${res.status}`);
-    const text = await res.text();
-    const lines = text.split("\n");
-    for (const raw of lines) {
-      const line = raw.trim();
-      const regex = new RegExp(`^${serviceLabel}\\s*-`, "i");
-      if (regex.test(line)) return line.replace(regex, "").trim();
-    }
-    throw new Error(`${serviceLabel} tunnel not found`);
-  }
 
-  (async () => {
-    const services = ["Jellyfin", "Immich", "Navidrome", "File Manager", "Casaos", "Netdata"];
-    for (const name of services) {
-      try {
-        const url = await getServiceTunnelUrl(name);
-        const btn = document.getElementById(`btn-${name.toLowerCase().replace(/\s+/g, '-')}`);
-        if (btn) btn.onclick = () => window.open(url, "_blank"); {
+  <!-- 🌐 Service tunnel buttons -->
+  <script>
+    async function getServiceTunnelUrl(serviceLabel) {
+      const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
+      if (!res.ok) throw new Error(`Failed to fetch tunnel file: ${res.status}`);
+      const text = await res.text();
+      const lines = text.split("\n");
+      for (const raw of lines) {
+        const line = raw.trim();
+        const regex = new RegExp(`^${serviceLabel}\\s*-`, "i");
+        if (regex.test(line)) return line.replace(regex, "").trim();
+      }
+      throw new Error(`${serviceLabel} tunnel not found`);
+    }
+
+    (async () => {
+      const services = ["Jellyfin", "Immich", "Navidrome", "File Manager", "Casaos", "Netdata"];
+      for (const name of services) {
+        try {
+          const url = await getServiceTunnelUrl(name);
+          const btn = document.getElementById(`btn-${name.toLowerCase().replace(/\s+/g, '-')}`);
+          if (btn) btn.onclick = () => window.open(url, "_blank");
+        } catch (err) {
+          console.error(`Failed to set link for ${name}:`, err);
         }
-      } catch (err) {
-        console.error(`Failed to set link for ${name}:`, err);
+      }
+    })();
+
+    // 🔹 Logout handler
+    async function logoutUser() {
+      try {
+        const api = await getLoginTunnelUrl();
+        await fetch(api + "/logout", {
+          method: "POST",
+          credentials: "include"
+        });
+        window.location.href = "/login";
+      } catch (e) {
+        window.location.href = "/login";
       }
     }
-  })();
-</script>
+  </script>
 </body>
 </html>
