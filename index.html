@@ -34,6 +34,38 @@
     </style>
   </head>
   <body>
+    <script>
+  // 🔹 Function to get your live API tunnel URL (same as used in login/dashboard)
+  async function getLoginTunnelUrl() {
+    const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
+    const text = await res.text();
+    for (const line of text.split("\n")) {
+      if (/^login tunnel\s*-/i.test(line)) {
+        return line.replace(/^login tunnel\s*-\s*/i, "").trim();
+      }
+    }
+    throw new Error("Login tunnel not found");
+  }
+
+  // 🔹 Immediately check if user already logged in
+  (async function() {
+    try {
+      const api = await getLoginTunnelUrl(); // dynamically fetch current tunnel
+      const res = await fetch(api + "/session_check", { credentials: "include" });
+
+      if (res.ok) {
+        // ✅ User has a valid session cookie -> skip login
+        console.log("Already logged in, redirecting to dashboard...");
+        window.location.href = "/dashboard";
+        return;
+      }
+      // if not ok, just show normal index page
+    } catch (e) {
+      console.warn("Session check failed:", e);
+      // ignore and let index page show
+    }
+  })();
+</script>
     <h1>Welcome to Lucian Universe</h1>
     <a href="login.html">Login</a>
   </body>
