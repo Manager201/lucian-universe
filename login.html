@@ -184,6 +184,7 @@
         const res = await fetch(apiBase + "/send_otp", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include", 
           body: JSON.stringify({ username, email })
         });
         if (res.status === 200) {
@@ -209,6 +210,7 @@
         const res = await fetch(apiBase + "/verify_otp", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include", 
           body: JSON.stringify({ username, otp })
         });
         if (res.status === 200) {
