@@ -176,6 +176,7 @@
   </div>
 </section>
 <script>
+  // FAQ accordion
   (function(){
     const items = document.querySelectorAll('.faq-item');
     items.forEach(item => {
@@ -183,7 +184,7 @@
       const panel = item.querySelector('.faq-a');
       btn.addEventListener('click', () => {
         const expanded = btn.getAttribute('aria-expanded') === 'true';
-        // Close other items (accordion behavior)
+        // Close other items
         items.forEach(i => {
           const b = i.querySelector('.faq-q');
           const p = i.querySelector('.faq-a');
@@ -200,45 +201,45 @@
       });
     });
   })();
-      (async function getLoginTunnelUrl() {
-        const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
-        if (!res.ok) {
-            throw new Error(`Failed to fetch tunnel file: ${res.status}`);
-        }
 
-        const text = await res.text();
-        const lines = text.split("\n");
-
-        for (const raw of lines) {
-            const line = raw.trim();
-            // Match "Login tunnel - <url>" (case-insensitive)
-            if (/^login tunnel\s*-/i.test(line)) {
-                // Remove the prefix and return the rest
-                return line.replace(/^login tunnel\s*-\s*/i, "").trim();
-            }
-        }
-
-        throw new Error("Login tunnel not found in file");
+  // Define reusable function (not IIFE)
+  async function getLoginTunnelUrl() {
+    const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
+    if (!res.ok) {
+      throw new Error(`Failed to fetch tunnel file: ${res.status}`);
     }
-    )();
-    (async function() {
+
+    const text = await res.text();
+    const lines = text.split("\n");
+
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (/^login tunnel\s*-/i.test(line)) {
+        return line.replace(/^login tunnel\s*-\s*/i, "").trim();
+      }
+    }
+
+    throw new Error("Login tunnel not found in file");
+  }
+
+  // Session check
+  (async function() {
     try {
       const api = await getLoginTunnelUrl(); // dynamically fetch current tunnel
       const res = await fetch(api + "/session_check", { credentials: "include" });
 
       if (res.ok) {
-        // ✅ User has a valid session cookie -> skip login
         console.log("Already logged in, redirecting to dashboard...");
         window.location.href = "/dashboard";
         return;
       }
-      // if not ok, just show normal index page
+      // else: stay on index page
     } catch (e) {
       console.warn("Session check failed:", e);
-      // ignore and let index page show
     }
   })();
 </script>
+
   <!-- Footer -->
   <footer>
     &copy; 2025 Lucian Universe. All rights reserved.
@@ -247,4 +248,5 @@
 </body>
 
 </html>
+
 
