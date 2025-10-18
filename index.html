@@ -200,6 +200,27 @@
       });
     });
   })();
+      (async function getLoginTunnelUrl() {
+        const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
+        if (!res.ok) {
+            throw new Error(`Failed to fetch tunnel file: ${res.status}`);
+        }
+
+        const text = await res.text();
+        const lines = text.split("\n");
+
+        for (const raw of lines) {
+            const line = raw.trim();
+            // Match "Login tunnel - <url>" (case-insensitive)
+            if (/^login tunnel\s*-/i.test(line)) {
+                // Remove the prefix and return the rest
+                return line.replace(/^login tunnel\s*-\s*/i, "").trim();
+            }
+        }
+
+        throw new Error("Login tunnel not found in file");
+    }
+    )();
     (async function() {
     try {
       const api = await getLoginTunnelUrl(); // dynamically fetch current tunnel
@@ -226,3 +247,4 @@
 </body>
 
 </html>
+
