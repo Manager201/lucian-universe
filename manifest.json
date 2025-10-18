@@ -3,12 +3,12 @@
   "dir": "ltr",
   "display": "standalone",
   "name": "Lucian Universe",
-  "orientation": "portrait",
+  "orientation": "any",
   "scope": "/",
   "short_name": "Lucian",
   "start_url": "/",
   "theme_color": "#000000",
-    "icons": [
+  "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
@@ -21,5 +21,14 @@
     }
   ],
   "description": "Your personal cloud hub for music, movies, photos, and more.",
-  "lang": "en"
+  "lang": "en",
+  "categories": [
+    "entertainment",
+    "music",
+    "photo"
+  ],
+  "display_override": [
+    "fullscreen",
+    "window-controls-overlay"
+  ]
 }
