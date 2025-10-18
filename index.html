@@ -32,9 +32,15 @@
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: url("user_icon.png") center center / cover no-repeat;
+        overflow: hidden;
         cursor: pointer;
         position: relative;
+      }
+
+      .user-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
 
       .dropdown {
@@ -46,7 +52,7 @@
         border-radius: 6px;
         display: none;
         flex-direction: column;
-        min-width: 100px;
+        min-width: 140px;
         z-index: 1000;
       }
 
@@ -79,10 +85,11 @@
   </head>
   <body>
     <div id="topBar" class="top-right" style="display: none;">
-      <a href="/dashboard" class="button">Go to Dashboard</a>
+      <a id="dashboardBtn" href="/dashboard" class="button" style="display: none;">Go to Dashboard</a>
       <div class="user-icon" onclick="toggleDropdown()">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User Icon" />
         <div id="dropdownMenu" class="dropdown">
-          <a href="#" onclick="logout()">Logout</a>
+          <!-- Content will be injected dynamically -->
         </div>
       </div>
     </div>
@@ -122,10 +129,21 @@
           const api = await getLoginTunnelUrl();
           const res = await fetch(api + "/session_check", { credentials: "include" });
 
+          document.getElementById("topBar").style.display = "flex";
+          document.getElementById("loginBtn").style.display = "none";
+
+          const dropdown = document.getElementById("dropdownMenu");
+
           if (res.ok) {
-            // Logged in: show dashboard button and user icon
-            document.getElementById("topBar").style.display = "flex";
-            document.getElementById("loginBtn").style.display = "none";
+            // Logged in
+            document.getElementById("dashboardBtn").style.display = "inline-block";
+            dropdown.innerHTML = `<a href="#" onclick="logout()">Logout</a>`;
+          } else {
+            // Not logged in
+            dropdown.innerHTML = `
+              <a href="signup.html">Request Sign Up</a>
+              <a href="login.html">Login</a>
+            `;
           }
         } catch (e) {
           console.warn("Session check failed:", e);
