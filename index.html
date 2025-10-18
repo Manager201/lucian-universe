@@ -9,16 +9,26 @@
 </head>
 <body>
   <!-- Header -->
-  <header>
-    <h1>Lucian Universe</h1>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#about">About</a>
-      <a href="#testimonials">Testimonial</a>
-      <a href="#contact">Contact</a>
-      <a href="#join" class="btn-join">Join Now</a>
-    </nav>
-  </header>
+<header>
+  <h1>Lucian Universe</h1>
+
+  <nav class="nav-links">
+    <a href="#">Home</a>
+    <a href="#about">About</a>
+    <a href="login.html" class="btn-join">Login Now</a>
+  </nav>
+
+  <!-- put button last so flex pushes it to the far right -->
+  <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
+</header>
+<script>
+  const toggleBtn = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.nav-links');
+
+  toggleBtn.addEventListener('click', () => {
+    nav.classList.toggle('active');
+  });
+</script>
 
   <!-- Hero -->
 <section class="hero">
@@ -28,7 +38,8 @@
       <p>
         Dive into Lucian Universe, where global connections flourish. Sign up, log in, and explore a world designed for seamless interaction and community growth. Join us today!
       </p>
-      <button class="btn-know">Know more</button>
+      <a href="login.html">
+      <button class="btn-know">Login</button></a>
     </div>
 
     <div class="hero-media">
@@ -48,9 +59,9 @@
       <div class="feature-box"><h4>🎨 Profile Customization</h4><p>Personalize your space.</p></div>
       <div class="feature-box"><h4>⚡ Easy Signup</h4><p>Quickly join our vibrant community.</p></div>
       <div class="feature-box"><h4>🔒 Secure Login</h4><p>Safeguarding your data always.</p></div>
-      <div class="feature-box"><h4>💬 Community Forums</h4><p>Engage in meaningful discussions.</p></div>
-      <div class="feature-box"><h4>📁 Resource Sharing</h4><p>Share files, collaborate, and grow.</p></div>
-      <div class="feature-box"><h4>📅 Event Coordination</h4><p>Plan meetups and activities.</p></div>
+      <div class="feature-box"><h4>💬 Community Forums</h4><p>A lot to Discuss and A lot to Know.</p></div>
+      <div class="feature-box"><h4>📁 Resource Sharing</h4><p>Share files, get your own personal space, and grow.</p></div>
+      <div class="feature-box"><h4>🎵 Entertainment</h4><p>Enjoy happy moments with your friends and family.</p></div>
       <div class="feature-box"><h4>📨 Direct Messaging</h4><p>Instant messages with friends.</p></div>
     </div>
   </section>

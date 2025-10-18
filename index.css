@@ -18,13 +18,12 @@ body {
   color: var(--text-light);
   line-height: 1.6;
 }
-
-/* Header */
+/* Header layout (desktop default) */
 header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between;   /* logo left, nav right */
   align-items: center;
-  padding: 20px 50px;
+  padding: 20px 30px;
   background: rgba(0, 0, 0, 0.7);
   position: sticky;
   top: 0;
@@ -37,32 +36,77 @@ header h1 {
   letter-spacing: 1px;
 }
 
-nav a {
-  margin: 0 15px;
+/* Desktop nav */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
   text-decoration: none;
   color: var(--text-light);
   font-weight: 500;
   transition: color 0.3s;
 }
-
-nav a:hover {
-  color: var(--accent);
-}
+.nav-links a:hover { color: var(--accent); }
 
 .btn-join {
   background: var(--primary);
   color: #fff;
   padding: 10px 20px;
   border-radius: 5px;
-  text-decoration: none;
   font-weight: bold;
   transition: background 0.3s;
 }
+.btn-join:hover { background: #6845d9; }
 
-.btn-join:hover {
-  background: #6845d9;
+/* Hamburger button (hidden on desktop) */
+.menu-toggle {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
 }
 
+/* Mobile styles */
+@media (max-width: 768px) {
+  /* hide inline nav, show hamburger */
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    height: 100%;
+    width: 250px;
+    background: #1a1a2e;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 20px;
+    gap: 20px;
+    transition: left 0.3s ease;
+    z-index: 2;
+  }
+  .nav-links.active {
+    display: flex;
+    left: 0;
+  }
+
+  .menu-toggle {
+    display: block;
+    position: absolute;   /* pin it */
+    right: 20px;          /* always on right edge */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+  }
+
+  .nav-links a {
+    font-size: 1.1rem;
+    color: #fff;
+  }
+}
 /* Hero wrapper */
 .hero {
   background: linear-gradient(to bottom, #0d0d1a, #1a1a2e);
