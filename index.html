@@ -18,7 +18,50 @@
         justify-content: center;
         text-align: center;
       }
-      a {
+
+      .top-right {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .user-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: url("user_icon.png") center center / cover no-repeat;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid #0b63ff;
+        border-radius: 6px;
+        display: none;
+        flex-direction: column;
+        min-width: 100px;
+        z-index: 1000;
+      }
+
+      .dropdown a {
+        color: white;
+        padding: 8px 12px;
+        text-decoration: none;
+        border-bottom: 1px solid #0b63ff;
+      }
+
+      .dropdown a:hover {
+        background-color: #0b63ff;
+      }
+
+      a.button {
         color: #0b63ff;
         text-decoration: none;
         border: 1px solid #0b63ff;
@@ -27,46 +70,67 @@
         margin-top: 20px;
         display: inline-block;
       }
-      a:hover {
+
+      a.button:hover {
         background-color: #0b63ff;
         color: white;
       }
     </style>
   </head>
   <body>
-    <script>
-  // 🔹 Function to get your live API tunnel URL (same as used in login/dashboard)
-  async function getLoginTunnelUrl() {
-    const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
-    const text = await res.text();
-    for (const line of text.split("\n")) {
-      if (/^login tunnel\s*-/i.test(line)) {
-        return line.replace(/^login tunnel\s*-\s*/i, "").trim();
-      }
-    }
-    throw new Error("Login tunnel not found");
-  }
+    <div id="topBar" class="top-right" style="display: none;">
+      <a href="/dashboard" class="button">Go to Dashboard</a>
+      <div class="user-icon" onclick="toggleDropdown()">
+        <div id="dropdownMenu" class="dropdown">
+          <a href="#" onclick="logout()">Logout</a>
+        </div>
+      </div>
+    </div>
 
-  // 🔹 Immediately check if user already logged in
-  (async function() {
-    try {
-      const api = await getLoginTunnelUrl(); // dynamically fetch current tunnel
-      const res = await fetch(api + "/session_check", { credentials: "include" });
-
-      if (res.ok) {
-        // ✅ User has a valid session cookie -> skip login
-        console.log("Already logged in, redirecting to dashboard...");
-        window.location.href = "/dashboard";
-        return;
-      }
-      // if not ok, just show normal index page
-    } catch (e) {
-      console.warn("Session check failed:", e);
-      // ignore and let index page show
-    }
-  })();
-</script>
     <h1>Welcome to Lucian Universe</h1>
-    <a href="login.html">Login</a>
+    <a id="loginBtn" href="login.html" class="button">Login</a>
+
+    <script>
+      async function getLoginTunnelUrl() {
+        const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
+        const text = await res.text();
+        for (const line of text.split("\n")) {
+          if (/^login tunnel\s*-/i.test(line)) {
+            return line.replace(/^login tunnel\s*-\s*/i, "").trim();
+          }
+        }
+        throw new Error("Login tunnel not found");
+      }
+
+      function toggleDropdown() {
+        const menu = document.getElementById("dropdownMenu");
+        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      }
+
+      async function logout() {
+        try {
+          const api = await getLoginTunnelUrl();
+          await fetch(api + "/logout", { method: "POST", credentials: "include" });
+          location.reload();
+        } catch (e) {
+          console.warn("Logout failed:", e);
+        }
+      }
+
+      (async function() {
+        try {
+          const api = await getLoginTunnelUrl();
+          const res = await fetch(api + "/session_check", { credentials: "include" });
+
+          if (res.ok) {
+            // Logged in: show dashboard button and user icon
+            document.getElementById("topBar").style.display = "flex";
+            document.getElementById("loginBtn").style.display = "none";
+          }
+        } catch (e) {
+          console.warn("Session check failed:", e);
+        }
+      })();
+    </script>
   </body>
 </html>
