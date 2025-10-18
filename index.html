@@ -1,156 +1,199 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>Lucian Universe</title>
-    <link rel="manifest" href="manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/pwabuilder-sw.js');
-  }
-</script>
-    <style>
-      body {
-        background: url("welcome.png") no-repeat center center fixed;
-        background-size: cover;
-        color: white;
-        font-family: system-ui, sans-serif;
-        height: 100vh;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-      }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lucian Universe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>Lucian Universe</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#about">About</a>
+      <a href="#testimonials">Testimonial</a>
+      <a href="#contact">Contact</a>
+      <a href="#join" class="btn-join">Join Now</a>
+    </nav>
+  </header>
 
-      .top-right {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .user-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        overflow: hidden;
-        cursor: pointer;
-      }
-
-      .user-icon img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .dropdown {
-        position: absolute;
-        top: 60px; /* below the avatar */
-        right: 20px;
-        background: rgba(0, 0, 0, 0.8);
-        border: 1px solid #0b63ff;
-        border-radius: 6px;
-        display: none;
-        flex-direction: column;
-        min-width: 140px;
-        z-index: 1000;
-      }
-
-      .dropdown a {
-        color: white;
-        padding: 8px 12px;
-        text-decoration: none;
-        border-bottom: 1px solid #0b63ff;
-      }
-
-      .dropdown a:hover {
-        background-color: #0b63ff;
-      }
-
-      a.button {
-        color: #0b63ff;
-        text-decoration: none;
-        border: 1px solid #0b63ff;
-        padding: 8px 16px;
-        border-radius: 8px;
-        display: inline-block;
-      }
-
-      a.button:hover {
-        background-color: #0b63ff;
-        color: white;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="topBar" class="top-right" style="display: none;">
-      <a id="dashboardBtn" href="/dashboard" class="button" style="display: none;">Go to Dashboard</a>
-      <div class="user-icon" onclick="toggleDropdown()">
-        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User Icon" />
-      </div>
+  <!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h2>Connect Across the Lucian Universe</h2>
+      <p>
+        Dive into Lucian Universe, where global connections flourish. Sign up, log in, and explore a world designed for seamless interaction and community growth. Join us today!
+      </p>
+      <button class="btn-know">Know more</button>
     </div>
 
-    <h1>Welcome to Lucian Universe</h1>
+    <div class="hero-media">
+      <video autoplay muted loop playsinline>
+        <source src="https://assets-v2.codedesign.ai/storage/v1/object/public/685a38bb1be5a6957cc7c130_da5ac127/asset-63e44766" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</section>
 
-    <!-- Dropdown moved OUTSIDE user-icon so it’s not clipped -->
-    <div id="dropdownMenu" class="dropdown"></div>
+  <!-- Features -->
+  <section class="features" id="about">
+    <h3>Features</h3>
+    <div class="feature-grid">
+      <div class="feature-box"><h4>🌍 Global Access</h4><p>Connect with users worldwide.</p></div>
+      <div class="feature-box"><h4>🎨 Profile Customization</h4><p>Personalize your space.</p></div>
+      <div class="feature-box"><h4>⚡ Easy Signup</h4><p>Quickly join our vibrant community.</p></div>
+      <div class="feature-box"><h4>🔒 Secure Login</h4><p>Safeguarding your data always.</p></div>
+      <div class="feature-box"><h4>💬 Community Forums</h4><p>Engage in meaningful discussions.</p></div>
+      <div class="feature-box"><h4>📁 Resource Sharing</h4><p>Share files, collaborate, and grow.</p></div>
+      <div class="feature-box"><h4>📅 Event Coordination</h4><p>Plan meetups and activities.</p></div>
+      <div class="feature-box"><h4>📨 Direct Messaging</h4><p>Instant messages with friends.</p></div>
+    </div>
+  </section>
 
-    <script>
-      async function getLoginTunnelUrl() {
-        const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
-        const text = await res.text();
-        for (const line of text.split("\n")) {
-          if (/^login tunnel\s*-/i.test(line)) {
-            return line.replace(/^login tunnel\s*-\s*/i, "").trim();
+  <!-- Stay Informed (replica of radar-like section) -->
+  <section class="informed-section" id="informed">
+    <div class="informed-content">
+      <button class="btn-informed">Stay Informed</button>
+      <h2 class="informed-title">Connect Across <span>Platforms</span></h2>
+      <p class="informed-desc">
+        Explore our research and reading section, designed to keep you informed and inspired.
+        Discover new insights, connect with experts, and expand your understanding.
+      </p>
+      <div class="info-grid">
+        <div class="info-box">
+          <span class="info-icon">📄</span>
+          <div class="info-title">Latest News</div>
+          <div class="info-text">Stay updated with server developments.</div>
+        </div>
+        <div class="info-box">
+          <span class="info-icon">💡</span>
+          <div class="info-title">Guides Section</div>
+          <div class="info-text">Learn tips and tricks.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="support-section">
+  <div class="support-text">
+    <div class="support-label">Always Available</div>
+
+    <div class="support-copy">
+      <h2 class="support-title">24/7 Dedicated Support Team</h2>
+      <p class="support-desc">
+        Our dedicated support team is available 24/7 to assist you with any questions or concerns.
+        We prioritize your satisfaction and strive to provide prompt and helpful solutions.
+      </p>
+    </div>
+  </div>
+
+  <!-- Placeholder 1: replace sample.jpg with your actual image file -->
+  <div class="support-image support-image--large" id="support-image-1">
+  <video class="support-video" autoplay muted loop playsinline>
+    <source src="sample1.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  </div>
+
+  <!-- Placeholder 2: replace sample.jpg with your second image file -->
+  <div class="support-image support-image--small" id="support-image-2" aria-hidden="true"
+       style="background-image: url('sample2.png');"></div>
+  </section>
+<!-- Begin: Promotional card (uses sample.png as background) -->
+<section class="promo-card-section">
+  <div class="promo-card" aria-hidden="false" style="background-image: url('sample3.png');">
+    <button class="promo-chip">Why Choose</button>
+
+    <div class="promo-content">
+      <h3 class="promo-title">Experience the Lucian Universe Difference</h3>
+      <p class="promo-sub">
+        Join Lucian Universe for unparalleled connectivity. Experience seamless interactions and global community engagement.
+      </p>
+    </div>
+  </div>
+</section>
+<section class="faq-section" aria-labelledby="faq-heading">
+  <div class="faq-inner">
+    <h3 id="faq-heading" class="faq-heading">Frequently Asked Questions</h3>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span class="faq-q-text">How do I create an account?</span>
+          <span class="faq-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a" hidden>
+          <p>Click Sign Up, enter your email or use social login, verify your account, and complete your profile to get started.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span class="faq-q-text">Is my data secure?</span>
+          <span class="faq-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a" hidden>
+          <p>We use encryption in transit and at rest, strict access controls, and regular audits to protect user data.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span class="faq-q-text">How do I connect with others?</span>
+          <span class="faq-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a" hidden>
+          <p>Use the Discover, Forums, or search features to find users, then send a connect request or start a conversation directly.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span class="faq-q-text">Can I customize my profile?</span>
+          <span class="faq-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a" hidden>
+          <p>Yes. You can update your avatar, cover image, bio, and privacy settings from your profile settings page.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (function(){
+    const items = document.querySelectorAll('.faq-item');
+    items.forEach(item => {
+      const btn = item.querySelector('.faq-q');
+      const panel = item.querySelector('.faq-a');
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        // Close other items (accordion behavior)
+        items.forEach(i => {
+          const b = i.querySelector('.faq-q');
+          const p = i.querySelector('.faq-a');
+          if (i !== item) {
+            b.setAttribute('aria-expanded', 'false');
+            p.hidden = true;
+            i.querySelector('.faq-toggle').textContent = '+';
           }
-        }
-        throw new Error("Login tunnel not found");
-      }
+        });
+        // Toggle current
+        btn.setAttribute('aria-expanded', String(!expanded));
+        panel.hidden = expanded;
+        item.querySelector('.faq-toggle').textContent = expanded ? '+' : '−';
+      });
+    });
+  })();
+</script>
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Lucian Universe. All rights reserved.
+  </footer>
 
-      function toggleDropdown() {
-        const menu = document.getElementById("dropdownMenu");
-        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-      }
-
-      async function logout() {
-        try {
-          const api = await getLoginTunnelUrl();
-          await fetch(api + "/logout", { method: "POST", credentials: "include" });
-          location.reload();
-        } catch (e) {
-          console.warn("Logout failed:", e);
-        }
-      }
-
-      (async function() {
-        try {
-          const api = await getLoginTunnelUrl();
-          const res = await fetch(api + "/session_check", { credentials: "include" });
-
-          document.getElementById("topBar").style.display = "flex";
-
-          const dropdown = document.getElementById("dropdownMenu");
-
-          if (res.ok) {
-            // Logged in
-            document.getElementById("dashboardBtn").style.display = "inline-block";
-            dropdown.innerHTML = `<a href="#" onclick="logout()">Logout</a>`;
-          } else {
-            // Not logged in
-            dropdown.innerHTML = `
-              <a href="signup.html">Request Sign Up</a>
-              <a href="login.html">Login</a>
-            `;
-          }
-        } catch (e) {
-          console.warn("Session check failed:", e);
-        }
-      })();
-    </script>
-  </body>
+</body>
 </html>
