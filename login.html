@@ -104,7 +104,23 @@
         }
     })();
 
+  (async function() {
+    try {
+      const api = await getLoginTunnelUrl(); // dynamically fetch current tunnel
+      const res = await fetch(api + "/session_check", { credentials: "include" });
 
+      if (res.ok) {
+        // ✅ User has a valid session cookie -> skip login
+        console.log("Already logged in, redirecting to dashboard...");
+        window.location.href = "/dashboard";
+        return;
+      }
+      // if not ok, just show normal index page
+    } catch (e) {
+      console.warn("Session check failed:", e);
+      // ignore and let index page show
+    }
+  })();
     // Check username and decide login method
     async function chooseMethod() {
       const username = document.getElementById("username").value.trim();
