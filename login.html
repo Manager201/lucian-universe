@@ -1,252 +1,572 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <title>Lucian Universe - Login</title>
   <style>
-    body {
-      background: black;
-      color: white;
-      font-family: system-ui, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-      margin: 0;
+    :root{
+      --green:#4caf50; --red:#ff4d4d; --dark-red:#8b0000;
+      --dark-bg:#000; --card-bg:#0b0b0b; --accent:#0b63ff; --success:#2e7d32;
     }
-    input, button, select {
-      padding: 10px;
-      margin: 8px;
-      border: none;
-      border-radius: 6px;
+    *{box-sizing:border-box}
+    body{
+      background:var(--dark-bg);
+      color:#fff;
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+      display:flex; align-items:center; justify-content:center;
+      height:100vh; margin:0;
     }
-    input {
-      width: 220px;
+    .card{
+      background:var(--card-bg);
+      padding:28px;
+      border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,.6);
+      width:420px;
+      max-width:96%;
+      overflow:hidden;
     }
-    button {
-      background: #0b63ff;
-      color: white;
-      cursor: pointer;
+    input.success {
+      border-color: var(--green);
+      background:#19bf19;   /* light green background */
+      color:#000;
+      box-shadow:0 0 0 4px rgba(0, 255, 8, 0.3); /* subtle green glow */
     }
-    button:hover {
-      background: #0948b4;
+    h2{ text-align:center; margin:0 0 14px;font-weight:600 }
+    .username-container{ position:relative; margin-bottom:8px; }
+    input[type="text"], input[type="password"], input[type="email"]{
+      width:100%; padding:12px 76px 12px 14px; border-radius:8px; border:1px solid transparent; outline:none; background:#fff; color:#000;
     }
-    #message { margin-top: 10px; color: #ff4d4d; }
+    input.error{ border-color:var(--dark-red); background:#330000; color:#fff; box-shadow:0 0 0 4px rgba(139,0,0,0.08); }
+
+    .icons{ position:absolute; right:10px; top:50%; transform:translateY(-50%); display:flex; gap:8px; align-items:center; }
+    .material-symbols-outlined.icon{ font-size:20px; cursor:pointer; color:#666; display:none; user-select:none; }
+    .material-symbols-outlined.icon.show{ display:inline-block; }
+    .icon.tick{ color:var(--green) }
+    .icon.cross{ color:var(--red) }
+    .icon.vis{ color:#666 }
+
+    .muted{ color:#aaa; font-size:13px; margin-top:6px }
+
+    .methods{ display:none; margin-top:12px; text-align:left }
+    .radio-row{ display:flex; gap:12px; align-items:center }
+    .radio{ display:inline-flex; align-items:center; gap:8px; cursor:pointer; user-select:none; color:#ddd }
+    .radio input[type="radio"]{ display:none }
+    .radio .dot{ width:18px; height:18px; border-radius:50%; border:2px solid #666; display:inline-block; position:relative }
+    .radio input[type="radio"]:checked + .dot{ border-color:var(--accent) }
+    .radio input[type="radio"]:checked + .dot::after{ content:""; position:absolute; left:3px; top:3px; width:8px; height:8px; border-radius:50%; background:var(--accent) }
+
+    .method-box{ margin-top:12px; display:none; text-align:left }
+    .small-btn{ padding:8px 12px; margin-top:8px; border-radius:6px; border:none; background:var(--accent); color:#fff; cursor:pointer }
+    .small-btn[disabled]{ opacity:.6; cursor:not-allowed }
+    #loginBtn{ margin-top:14px; width:100%; padding:12px; border-radius:8px; border:none; background:#1e88e5; color:#fff; cursor:pointer; display:none }
+
+    /* OTP layout and cells */
+    .otp-area{ margin-top:10px }
+    .otp-row{ display:flex; gap:8px; justify-content:center; align-items:center; margin-top:8px; }
+    .otp-input-cell{
+      width:46px; height:56px; border-radius:8px; background:#fff;
+      display:inline-flex; align-items:center; justify-content:center;
+      font-size:20px; text-align:center; border:2px solid transparent; color:#000;
+      -moz-appearance:textfield; /* avoid up/down arrows */
+    }
+    .otp-input-cell::-webkit-outer-spin-button, .otp-input-cell::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+    .otp-row.ok .otp-input-cell{ border-color:var(--green); background:#fff; color:#000 }
+    .otp-row.error .otp-input-cell{ border-color:var(--red); background:#330000; color:#fff }
+
+    /* toast */
+    .toast{ position:fixed; right:18px; top:18px; background:#111; color:#fff; padding:12px 14px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.6); transform:translateX(120%); transition:transform .35s ease; z-index:1000; display:flex; gap:12px; align-items:center; min-width:300px }
+    .toast.show{ transform:translateX(0) }
+    .toast.success{ border-left:4px solid var(--success) }
+    .toast.error{ border-left:4px solid var(--red) }
+    .toast .msg{ color:#fff }
+    .toast .close{ margin-left:auto; cursor:pointer; color:#ccc }
+
+    label.small{ color:#ddd; font-size:13px; display:block; margin-bottom:6px }
   </style>
 </head>
 <body>
-  <h2>Login to Lucian Universe</h2>
+  <div class="card">
+    <h2>Login to Lucian Universe</h2>
 
-  <div id="step1">
-    <input id="username" placeholder="Enter username"><br>
-    <button onclick="chooseMethod()">Next</button>
+    <div id="step1">
+      <div class="username-container">
+        <input id="username" type="text" placeholder="Enter username" autocomplete="off" />
+        <div class="icons">
+          <span id="usernameVis" class="material-symbols-outlined icon vis" title="clear">close</span>
+          <span id="usernameTick" class="material-symbols-outlined icon tick" aria-hidden="true">check_circle</span>
+          <span id="usernameCross" class="material-symbols-outlined icon cross" aria-hidden="true">cancel</span>
+        </div>
+      </div>
+      <div class="muted">Username will be checked automatically when you stop typing.</div>
+    </div>
+
+    <div id="methodRadios" class="methods" aria-hidden="true">
+      <div class="radio-row">
+        <label class="radio"><input id="radioEmail" name="method" type="radio" value="email"><span class="dot"></span><span>Email OTP</span></label>
+        <label class="radio"><input id="radioPassword" name="method" type="radio" value="password"><span class="dot"></span><span>Password</span></label>
+      </div>
+    </div>
+
+    <div id="emailBox" class="method-box" aria-hidden="true">
+      <label class="small">Email</label>
+      <div style="position:relative;">
+        <input id="email" type="email" placeholder="Enter email" />
+        <div class="icons" style="right:12px; position:absolute; top:50%; transform:translateY(-50%);">
+          <span id="emailTick" class="material-symbols-outlined icon tick">check_circle</span>
+          <span id="emailCross" class="material-symbols-outlined icon cross">cancel</span>
+        </div>
+      </div>
+
+      <div style="margin-top:10px; display:flex; align-items:center; gap:12px;">
+        <button id="sendOtpBtn" class="small-btn">Send OTP</button>
+        <span id="otpTimer" style="color:#9fb4ff; font-size:13px"></span>
+      </div>
+
+      <div id="otpArea" class="otp-area" style="display:none;">
+        <label class="small">Enter OTP</label>
+        <div class="otp-row" id="otpRow"></div>
+      </div>
+    </div>
+
+    <div id="passwordBox" class="method-box" aria-hidden="true">
+      <label class="small">Password</label>
+        <div style="position:relative;">
+<input id="password" type="password" placeholder="Enter password" />
+  <div class="icons">
+    <!-- 👁 Eye toggle should be visible by default -->
+    <span id="pwdToggle" class="material-symbols-outlined icon show" title="toggle visibility">visibility_off</span>
+    <span id="passwordTick" class="material-symbols-outlined icon tick">check_circle</span>
+    <span id="passwordCross" class="material-symbols-outlined icon cross">cancel</span>
+  </div>
+</div>
+      <div style="margin-top:10px;">
+        <button id="validatePasswordBtn" class="small-btn">Validate password</button>
+      </div>
+    </div>
+
+    <button id="loginBtn">Login</button>
+    <p id="hint" class="muted" style="display:none">When the required item shows green, the Login button will appear.</p>
   </div>
 
-  <div id="step2" style="display:none">
-    <select id="method">
-      <option value="password">Password</option>
-      <option value="email">Email OTP</option>
-    </select><br>
-    <button onclick="goToMethod()">Continue</button>
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <div class="msg">Username or Password is wrong</div>
+    <div class="close" id="toastClose">✕</div>
   </div>
-
-  <div id="passwordStep" style="display:none">
-    <input id="password" type="password" placeholder="Enter password"><br>
-    <button onclick="loginWithPassword()">Login</button>
-  </div>
-
-  <div id="emailStep" style="display:none">
-    <input id="email" placeholder="Enter email"><br>
-    <button onclick="sendOtp()">Send OTP</button><br>
-    <input id="otp" placeholder="Enter OTP" style="display:none"><br>
-    <button id="verifyBtn" style="display:none" onclick="verifyOtp()">Verify OTP</button>
-  </div>
-
-  <p id="message"></p>
 
   <script>
-    async function getLoginTunnelUrl() {
-        const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
-        if (!res.ok) {
-            throw new Error(`Failed to fetch tunnel file: ${res.status}`);
-        }
-
-        const text = await res.text();
-        const lines = text.split("\n");
-
-        for (const raw of lines) {
-            const line = raw.trim();
-            // Match "Login tunnel - <url>" (case-insensitive)
-            if (/^login tunnel\s*-/i.test(line)) {
-                // Remove the prefix and return the rest
-                return line.replace(/^login tunnel\s*-\s*/i, "").trim();
-            }
-        }
-
-        throw new Error("Login tunnel not found in file");
-    }
+    // endpoints expected by client:
+    // POST /check_user { username } -> 200 + JSON { has_email: boolean } if exists, 404 if not
+    // POST /send_otp { username, email } -> 200 if sent
+    // POST /verify_otp { username, otp } -> 200 if ok
+    // POST /check_password { username, password } -> 200 if ok (or returns JSON { success:true } etc)
+    // POST /login { username, password/otp, method } -> 200 redirect
 
     let apiBase = "";
-
-    (async () => {
-        try {
-            apiBase = await getLoginTunnelUrl();
-            console.log("✅ API base URL:", apiBase);
-        } catch (err) {
-            console.error("⚠️ Failed to fetch tunnel URL:", err);
-            const msgEl = document.getElementById("message");
-            if (msgEl) {
-                msgEl.textContent = "Server unavailable, please try again later.";
-            }
+    (async function initBase(){
+      try {
+        const res = await fetch("https://raw.githubusercontent.com/Manager201/lucian-universe/refs/heads/main/tunnel_url.txt");
+        const txt = await res.text();
+        for (const line of txt.split('\n')){
+          const l = line.trim();
+          if (/^login tunnel\s*-/i.test(l)){
+            apiBase = l.replace(/^login tunnel\s*-\s*/i,"").trim();
+            break;
+          }
         }
+      } catch(e){ console.warn("tunnel fetch failed", e); }
     })();
 
-  (async function() {
-    try {
-      const api = await getLoginTunnelUrl(); // dynamically fetch current tunnel
-      const res = await fetch(api + "/session_check", { credentials: "include" });
+    // elements
+    const usernameInput = document.getElementById('username');
+    const usernameTick = document.getElementById('usernameTick');
+    const usernameCross = document.getElementById('usernameCross');
+    const usernameVis = document.getElementById('usernameVis');
 
-      if (res.ok) {
-        // ✅ User has a valid session cookie -> skip login
-        console.log("Already logged in, redirecting to dashboard...");
-        window.location.href = "/dashboard";
-        return;
-      }
-      // if not ok, just show normal index page
-    } catch (e) {
-      console.warn("Session check failed:", e);
-      // ignore and let index page show
+    const methodRadios = document.getElementById('methodRadios');
+    const radioEmail = document.getElementById('radioEmail');
+    const radioPassword = document.getElementById('radioPassword');
+
+    const emailBox = document.getElementById('emailBox');
+    const emailInput = document.getElementById('email');
+    const sendOtpBtn = document.getElementById('sendOtpBtn');
+    const otpTimer = document.getElementById('otpTimer');
+    const otpArea = document.getElementById('otpArea');
+    const otpRow = document.getElementById('otpRow');
+    const emailTick = document.getElementById('emailTick');
+    const emailCross = document.getElementById('emailCross');
+
+    const passwordBox = document.getElementById('passwordBox');
+    const passwordInput = document.getElementById('password');
+    const pwdToggle = document.getElementById('pwdToggle');
+    const passwordTick = document.getElementById('passwordTick');
+    const passwordCross = document.getElementById('passwordCross');
+    const validatePasswordBtn = document.getElementById('validatePasswordBtn');
+
+    const loginBtn = document.getElementById('loginBtn');
+    const hint = document.getElementById('hint');
+
+    const toast = document.getElementById('toast');
+    const toastClose = document.getElementById('toastClose');
+
+    // state
+    let usernameValid = false;
+    let emailValidated = false;
+    let passwordValidated = false;
+    let selectedMethod = null; // 'email' or 'password'
+    let usernameDebounce = 0;
+    const otpDigits = 6;
+    let otpTimerHandle = null;
+    let otpCountdown = 0;
+    let currentOtpValue = "";
+
+    // helpers
+    function show(el){ if(el) el.classList.add('show'); }
+    function hide(el){ if(el) el.classList.remove('show'); }
+    function setToast(text, type){
+      toast.querySelector('.msg').textContent = text;
+      toast.classList.remove('error','success','show');
+      toast.classList.add('show', type === 'success' ? 'success' : 'error');
+      clearTimeout(toast._hide);
+      toast._hide = setTimeout(()=> toast.classList.remove('show'), 5000);
     }
-  })();
-    // Check username and decide login method
-    async function chooseMethod() {
-      const username = document.getElementById("username").value.trim();
-      if (!username) return showMsg("Please enter username");
+    toastClose.addEventListener('click', ()=> toast.classList.remove('show'));
 
+    // username input handling & debounce
+    usernameInput.addEventListener('input', ()=> {
+      usernameInput.classList.remove('error');
+      usernameValid = false;
+      hide(usernameTick); hide(usernameCross);
+      methodRadios.style.display = 'none';
+      emailBox.style.display = 'none';
+      passwordBox.style.display = 'none';
+      radioEmail.checked = false; radioPassword.checked = false;
+      emailValidated = passwordValidated = false;
+      selectedMethod = null;
+      updateLoginState();
+
+      clearTimeout(usernameDebounce);
+      usernameDebounce = setTimeout(()=> validateUsername(usernameInput.value.trim()), 600);
+    });
+    usernameVis.addEventListener('click', ()=> {
+      usernameInput.value = ''; usernameInput.dispatchEvent(new Event('input'));
+    });
+
+    async function validateUsername(username){
+      if (!username) return;
+      if (!apiBase) { console.warn('no api base'); return; }
       try {
-        const res = await fetch(apiBase + "/check_user", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username })
+        const res = await fetch(apiBase + '/check_user', {
+          method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
+          body:JSON.stringify({ username })
         });
+        const txt = await res.text();
+        let data = {};
+        try { data = JSON.parse(txt); } catch(e){}
 
-        if (res.ok) {
-          const data = await res.json();
-          localStorage.setItem("username", username);
-          document.getElementById("step1").style.display = "none";
-
-          if (data.has_email) {
-            // If user has email, ask which method
-            document.getElementById("step2").style.display = "block";
+        if (res.ok){
+          usernameValid = true;
+          usernameInput.classList.remove('error');
+          usernameInput.classList.add('success');
+          show(usernameTick); hide(usernameCross);
+          hint.style.display = 'block';
+          const hasEmail = !!(data && data.has_email);
+          if (hasEmail){
+            methodRadios.style.display = 'block';
+            selectedMethod = null;
+            radioEmail.checked = radioPassword.checked = false;
+            emailBox.style.display = passwordBox.style.display = 'none';
           } else {
-            // Directly show password
-            document.getElementById("passwordStep").style.display = "block";
+            methodRadios.style.display = 'none';
+            selectedMethod = 'password';
+            radioPassword.checked = true;
+            passwordBox.style.display = 'block';
+            emailBox.style.display = 'none';
           }
-        } else if (res.status === 404) {
-          showMsg("Username not found");
         } else {
-          showMsg("Unexpected server response");
+          usernameValid = false;
+          usernameInput.classList.add('error');
+          hide(usernameTick); show(usernameCross);
+          methodRadios.style.display = 'none';
+          hint.style.display = 'none';
         }
-      } catch (err) {
-        console.error(err);
-        showMsg("Server unreachable");
+      } catch(e){
+        usernameValid = false;
+        usernameInput.classList.add('error');
+        hide(usernameTick); show(usernameCross);
+        methodRadios.style.display = 'none';
+        hint.style.display = 'none';
       }
+      updateLoginState();
     }
 
-    function goToMethod() {
-      const method = document.getElementById("method").value;
-      document.getElementById("step2").style.display = "none";
-      if (method === "password") {
-        document.getElementById("passwordStep").style.display = "block";
+    // radio selection
+    radioEmail.addEventListener('change', ()=> {
+      if (radioEmail.checked){
+        selectedMethod = 'email';
+        emailBox.style.display = 'block';
+        passwordBox.style.display = 'none';
+        emailValidated = false;
+        clearOtpUI();
+      }
+      updateLoginState();
+    });
+    radioPassword.addEventListener('change', ()=> {
+      if (radioPassword.checked){
+        selectedMethod = 'password';
+        passwordBox.style.display = 'block';
+        emailBox.style.display = 'none';
+        passwordValidated = false;
+      }
+      updateLoginState();
+    });
+
+    // build OTP inputs
+    function buildOtpInputs(){
+      otpRow.innerHTML = '';
+      for (let i=0;i<otpDigits;i++){
+        const cell = document.createElement('input');
+        cell.className = 'otp-input-cell';
+        cell.type = 'tel';
+        cell.inputMode = 'numeric';
+        cell.maxLength = 1;
+        cell.autocomplete = 'one-time-code';
+        cell.value = '';
+        cell.addEventListener('input', onOtpInput);
+        cell.addEventListener('keydown', onOtpKeyDown);
+        cell.addEventListener('paste', onOtpPaste);
+        otpRow.appendChild(cell);
+      }
+      otpRow.classList.remove('ok','error');
+    }
+    buildOtpInputs();
+
+    function clearOtpUI(){
+      otpArea.style.display = 'none';
+      currentOtpValue = '';
+      const cells = otpRow.querySelectorAll('input');
+      cells.forEach(c=>{ c.value=''; c.style.borderColor='transparent'; c.style.background='#fff'; c.disabled=false });
+      emailTick.classList.remove('show'); emailCross.classList.remove('show');
+      if (otpTimerHandle){ clearInterval(otpTimerHandle); otpTimerHandle=null; otpTimer.textContent=''; sendOtpBtn.textContent='Send OTP'; sendOtpBtn.disabled=false; }
+    }
+
+    // send OTP and start countdown
+    sendOtpBtn.addEventListener('click', async ()=>{
+      const username = usernameInput.value.trim();
+      const email = emailInput.value.trim();
+      if (!username || !email) return;
+      sendOtpBtn.disabled = true;
+      try {
+        const res = await fetch(apiBase + '/send_otp', {
+          method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
+          body:JSON.stringify({ username, email })
+        });
+        if (res.ok){
+          emailTick.classList.add('show'); emailCross.classList.remove('show');
+          otpArea.style.display = 'block';
+          buildOtpInputs();
+          startOtpCountdown(30);
+          // focus first cell
+          setTimeout(()=> { const first = otpRow.querySelector('input'); if(first) first.focus(); }, 80);
+        } else {
+          emailTick.classList.remove('show'); emailCross.classList.add('show');
+          setToast('Username or Password is wrong','error');
+          sendOtpBtn.disabled = false;
+        }
+      } catch(e){
+        emailTick.classList.remove('show'); emailCross.classList.add('show');
+        setToast('Username or Password is wrong','error');
+        sendOtpBtn.disabled = false;
+      }
+      updateLoginState();
+    });
+
+    function startOtpCountdown(seconds){
+      if (otpTimerHandle) clearInterval(otpTimerHandle);
+      otpCountdown = seconds;
+      sendOtpBtn.disabled = true;
+      sendOtpBtn.textContent = 'Send OTP';
+      otpTimer.textContent = ` (${otpCountdown}s)`;
+      otpTimer.style.color = '#9fb4ff';
+      otpTimerHandle = setInterval(()=>{
+        otpCountdown--;
+        otpTimer.textContent = ` (${otpCountdown}s)`;
+        if (otpCountdown <= 0){
+          clearInterval(otpTimerHandle);
+          otpTimerHandle = null;
+          otpTimer.textContent = '';
+          sendOtpBtn.disabled = false;
+          sendOtpBtn.textContent = 'Resend OTP';
+        }
+      },1000);
+    }
+
+    // OTP input handlers
+    function onOtpInput(e){
+      const input = e.target;
+      const v = (input.value || '').replace(/\D/g,'').slice(-1);
+      input.value = v;
+      if (v){
+        const next = input.nextElementSibling;
+        if (next) next.focus();
+      }
+      collectOtpAndVerify();
+    }
+    function onOtpKeyDown(e){
+      if (e.key === 'Backspace' && !e.target.value){
+        const prev = e.target.previousElementSibling;
+        if (prev){ prev.focus(); prev.value=''; }
+      } else if (e.key === 'ArrowLeft'){
+        const prev = e.target.previousElementSibling; if(prev) prev.focus();
+      } else if (e.key === 'ArrowRight'){
+        const next = e.target.nextElementSibling; if(next) next.focus();
+      }
+    }
+    function onOtpPaste(e){
+      e.preventDefault();
+      const pasted = (e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,otpDigits);
+      if (!pasted) return;
+      const cells = Array.from(otpRow.querySelectorAll('input'));
+      for (let i=0;i<cells.length;i++) cells[i].value = pasted[i] || '';
+      const last = cells[Math.min(pasted.length-1, cells.length-1)];
+      if (last) last.focus();
+      collectOtpAndVerify();
+    }
+
+async function collectOtpAndVerify(){
+  const cells = Array.from(otpRow.querySelectorAll('input'));
+  const code = cells.map(c=>c.value||'').join('');
+  currentOtpValue = code;
+  otpRow.classList.remove('ok','error');
+
+  if (code.length === otpDigits){
+    cells.forEach(c=>c.disabled=true);
+    try {
+      const username = usernameInput.value.trim();
+      const email = emailInput.value.trim(); // keep email available for server-side association if needed
+      const res = await fetch(apiBase + '/verify_otp', {
+        method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
+        body: JSON.stringify({ username, email, otp: code }) 
+        // If your backend requires email here too, use:
+        // body: JSON.stringify({ username, email, otp: code })
+      });
+
+      if (res.status === 200){
+        otpRow.classList.add('ok'); 
+        emailValidated = true;
+        emailInput.classList.add('success');
+        emailTick.classList.add('show'); 
+        emailCross.classList.remove('show');
+        // no success toast here; final login will handle it
+      } else if (res.status === 401){
+        otpRow.classList.add('error'); 
+        emailValidated = false;
+        emailTick.classList.remove('show'); 
+        emailCross.classList.add('show');
+        setToast('Invalid OTP','error');
+        cells.forEach(c=>c.disabled=false);
+        cells[0].focus();
       } else {
-        document.getElementById("emailStep").style.display = "block";
+        setToast('Unexpected error','error');
       }
+    } catch(e){
+      otpRow.classList.add('error'); 
+      emailValidated = false;
+      emailTick.classList.remove('show'); 
+      emailCross.classList.add('show');
+      setToast('Server unreachable','error');
+      cells.forEach(c=>c.disabled=false);
+      cells[0].focus();
+    } finally {
+      updateLoginState();
     }
-
-    async function loginWithPassword() {
-      const username = localStorage.getItem("username");
-      const password = document.getElementById("password").value.trim();
-      if (!password) return showMsg("Enter password");
-
-      try {
-        const res = await fetch(apiBase + "/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include", 
-          body: JSON.stringify({ username, password })
-        });
-        if (res.status === 200) {
-          showMsg("✅ Login successful!", "green");
-          setTimeout(() => (location.href = "dashboard.html"), 1000);
-        } else if (res.status === 401) {
-          showMsg("Wrong username or password");
-        } else {
-          showMsg("Unexpected error");
-        }
-      } catch {
-        showMsg("Server unreachable");
+  } else {
+    otpRow.classList.remove('ok','error');
+    emailValidated = false;
+    emailTick.classList.remove('show'); 
+    emailCross.classList.remove('show');
+    updateLoginState();
+  }
+}
+    // password visibility
+    pwdToggle.addEventListener('click', ()=>{
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        pwdToggle.textContent = 'visibility_off'; // 👁‍🗨 show closed eye
+      } else {
+        passwordInput.type = 'password';
+        pwdToggle.textContent = 'visibility';     // 👁 show open eye
       }
+    });
+
+    // password validation - tolerant to various server responses
+    validatePasswordBtn.addEventListener('click', async ()=>{
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
+  if (!username || !password) return;
+  validatePasswordBtn.disabled = true;
+  try {
+    const res = await fetch(apiBase + '/login', {
+      method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
+      body:JSON.stringify({ username, password, method:'password' })
+    });
+    if (res.status === 200){
+      passwordValidated = true;
+      passwordInput.classList.add('success');
+      show(passwordTick); hide(passwordCross);
+    } else if (res.status === 401){
+      passwordValidated = false;
+      hide(passwordTick); show(passwordCross);
+      setToast('Wrong username or password','error');
+    } else {
+      setToast('Unexpected error','error');
+    }
+  } catch(e){
+    passwordValidated = false;
+    hide(passwordTick); show(passwordCross);
+    setToast('Server unreachable','error');
+  } finally {
+    validatePasswordBtn.disabled = false;
+    updateLoginState();
+  }
+});
+    // update login button visibility
+    function updateLoginState(){
+      if (!usernameValid){ loginBtn.style.display='none'; return; }
+      if (selectedMethod === 'email'){ loginBtn.style.display = emailValidated ? 'block' : 'none'; }
+      else if (selectedMethod === 'password'){ loginBtn.style.display = passwordValidated ? 'block' : 'none'; }
+      else loginBtn.style.display = 'none';
     }
 
-    async function sendOtp() {
-      const username = localStorage.getItem("username");
-      const email = document.getElementById("email").value.trim();
-      if (!email) return showMsg("Enter email");
+    // final login
+loginBtn.addEventListener('click', ()=>{
+  // At this point username, email, and OTP have already been verified
+  if (!usernameValid) {
+    setToast('Please enter a valid username','error');
+    return;
+  }
+  if (selectedMethod === 'email' && !emailValidated) {
+    setToast('Please verify your OTP','error');
+    return;
+  }
+  if (selectedMethod === 'password' && !passwordValidated) {
+    setToast('Please validate your password','error');
+    return;
+  }
 
-      try {
-        const res = await fetch(apiBase + "/send_otp", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include", 
-          body: JSON.stringify({ username, email })
-        });
-        if (res.status === 200) {
-          showMsg("OTP sent to email", "green");
-          document.getElementById("otp").style.display = "inline";
-          document.getElementById("verifyBtn").style.display = "inline";
-        } else if (res.status === 404) {
-          showMsg("Invalid email or username");
-        } else {
-          showMsg("Unexpected error");
-        }
-      } catch {
-        showMsg("Server unreachable");
-      }
-    }
+  // ✅ Everything is fine, no extra server call
+  setToast('Login Successful','success');
+  setTimeout(()=> window.location.href = '/dashboard', 800);
+});
+    // accessibility and events
+    passwordInput.addEventListener('keydown', (ev)=> { if (ev.key === 'Enter') validatePasswordBtn.click(); });
+    radioPassword.addEventListener('click', ()=> { radioPassword.checked=true; radioEmail.checked=false; selectedMethod='password'; updateLoginState(); });
+    radioEmail.addEventListener('click', ()=> { radioEmail.checked=true; radioPassword.checked=false; selectedMethod='email'; updateLoginState(); });
 
-    async function verifyOtp() {
-      const username = localStorage.getItem("username");
-      const otp = document.getElementById("otp").value.trim();
-      if (!otp) return showMsg("Enter OTP");
-
-      try {
-        const res = await fetch(apiBase + "/verify_otp", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include", 
-          body: JSON.stringify({ username, otp })
-        });
-        if (res.status === 200) {
-          showMsg("✅ Login successful!", "green");
-          setTimeout(() => (location.href = "dashboard.html"), 1000);
-        } else if (res.status === 401) {
-          showMsg("Invalid OTP");
-        } else {
-          showMsg("Unexpected error");
-        }
-      } catch {
-        showMsg("Server unreachable");
-      }
-    }
-
-    function showMsg(msg, color = "red") {
-      const m = document.getElementById("message");
-      m.style.color = color;
-      m.textContent = msg;
-    }
+    // init
+    toast.classList.remove('show');
   </script>
 </body>
 </html>
