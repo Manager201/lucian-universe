@@ -140,7 +140,7 @@
       <button id="btn-navidrome">Go</button>
     </div>
     <div class="box">
-      <h2>File Manager</h2>
+      <h2>My Files</h2>
       <button id="btn-file-manager">Go</button>
     </div>
     <div class="box">
@@ -179,7 +179,7 @@
     }
 
     (async () => {
-      const services = ["Jellyfin", "Immich", "Navidrome", "File Manager", "Casaos", "Netdata"];
+      const services = ["Jellyfin", "Immich", "Navidrome", "My Files", "Casaos", "Netdata"];
       for (const name of services) {
         try {
           const url = await getServiceTunnelUrl(name);
