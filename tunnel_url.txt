@@ -1,8 +1,8 @@
-Login tunnel - https://definitely-brief-discovery-intelligent.trycloudflare.com
-Jellyfin - https://chip-editors-democrat-blue.trycloudflare.com
-CasaOS - https://savannah-spyware-headlines-foundation.trycloudflare.com
-Netdata - https://ballet-wholesale-committee-rooms.trycloudflare.com
-Immich - https://attempt-referring-attacked-pipeline.trycloudflare.com
-My Files - https://climate-laden-amplifier-java.trycloudflare.com
-NEW - https://transform-million-ever-collins.trycloudflare.com
-Navidrome - https://fossil-partition-fuji-observations.trycloudflare.com
+Login tunnel - https://api.trycloudflare.com
+Jellyfin - https://api.trycloudflare.com
+CasaOS - https://api.trycloudflare.com
+Netdata - https://town-tobago-again-pay.trycloudflare.com
+Immich - https://cases-return-thermal-whale.trycloudflare.com
+My Files - https://tomorrow-lay-olympus-circuits.trycloudflare.com
+NEW - https://robert-three-places-norman.trycloudflare.com
+Navidrome - https://coupon-contain-ruth-alto.trycloudflare.com
